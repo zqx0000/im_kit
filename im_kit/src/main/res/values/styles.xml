@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextStyle.Alignment" parent="@android:style/Widget.TextView">
+        <item name="android:textDirection">locale</item>
+    </style>
+
+    <declare-styleable name="UserInfoItemView">
+        <attr name="item_userinfo_portrait" format="reference" />
+        <attr name="item_userinfo_portrait_height" format="dimension" />
+        <attr name="item_userinfo_portrait_width" format="dimension" />
+        <attr name="item_userinfo_name" format="string" />
+        <attr name="item_right_show" format="boolean" />
+        <attr name="item_userinfo_divider" format="boolean" />
+        <attr name="item_userifo_null_background" format="boolean" />
+
+    </declare-styleable>
+
+
+    <declare-styleable name="SwitchButton">
+        <attr name="kswThumbDrawable" format="reference" />
+        <attr name="kswThumbColor" format="color|reference" />
+        <attr name="kswThumbMargin" format="dimension|reference" />
+        <attr name="kswThumbMarginTop" format="dimension|reference" />
+        <attr name="kswThumbMarginBottom" format="dimension|reference" />
+        <attr name="kswThumbMarginLeft" format="dimension|reference" />
+        <attr name="kswThumbMarginRight" format="dimension|reference" />
+        <attr name="kswThumbWidth" format="dimension|reference" />
+        <attr name="kswThumbHeight" format="dimension|reference" />
+        <attr name="kswThumbRadius" format="dimension|reference" />
+        <attr name="kswBackRadius" format="dimension|reference" />
+        <attr name="kswBackDrawable" format="reference" />
+        <attr name="kswBackColor" format="color|reference" />
+        <attr name="kswFadeBack" format="boolean" />
+        <attr name="kswBackMeasureRatio" format="float" />
+        <attr name="kswAnimationDuration" format="integer" />
+        <attr name="kswTintColor" format="color|reference" />
+        <attr name="kswTextOn" format="string" />
+        <attr name="kswTextOff" format="string" />
+        <attr name="kswTextMarginH" format="dimension" />
+    </declare-styleable>
+
+
+    <!--设置-->
+    <declare-styleable name="SettingItemView">
+        <attr name="item_image" format="reference" />
+        <attr name="item_image_height" format="dimension" />
+        <attr name="item_image_width" format="dimension" />
+        <attr name="item_content" format="string" />
+        <attr name="item_content_text_size" format="dimension" />
+        <attr name="item_content_text_color" format="color" />
+        <attr name="item_value" format="string" />
+        <attr name="item_value_text_size" format="dimension" />
+        <attr name="item_value_text_color" format="color" />
+        <attr name="item_divider" format="boolean" />
+        <attr name="item_tag_image_height" format="dimension" />
+        <attr name="item_tag_image_width" format="dimension" />
+        <attr name="item_tag_image" format="reference" />
+        <attr name="item_switch" format="boolean" />
+        <attr name="item_background" format="reference" />
+        <attr name="item_null_background" format="boolean" />
+        <attr name="item_show_selected" format="boolean" />
+        <attr name="item_selected_image" format="reference" />
+        <attr name="item_right_image" format="reference" />
+        <attr name="item_right_image_width" format="dimension" />
+        <attr name="item_right_image_height" format="dimension" />
+
+    </declare-styleable>
+    <!-- 设置弹出窗口的属性，frame叠加，isfloat是否浮动，tarnslucent是否半透明，dim是背景是否变暗 -->
+    <style name="Theme_audioDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <declare-styleable name="WrapLayout">
+        <attr name="android:horizontalSpacing" />
+        <attr name="android:verticalSpacing" />
+        <attr name="android:gravity" />
+    </declare-styleable>
+    <declare-styleable name="WrapLayout_Layout">
+        <attr name="android:layout_gravity" />
+    </declare-styleable>
+
+    <style name="SwitchTheme">
+        <item name="colorControlActivated">@color/red</item>
+        <item name="colorSwitchThumbNormal">#FFF1F1F1</item>
+        <item name="android:colorForeground">#FF2F2F2F</item>
+    </style>
+
+    <declare-styleable name="CircleTextView">
+        <attr name="storkColor" format="color" />
+        <attr name="backColor" format="color" />
+        <attr name="storkWidth" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+        <attr name="civ_circle_background_color" format="color" />
+    </declare-styleable>
+</resources>

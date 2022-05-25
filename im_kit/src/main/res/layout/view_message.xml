@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/d8"
+    android:layout_marginBottom="@dimen/d8">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_time"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+        android:minWidth="@dimen/d80"
+        android:visibility="visible"
+        app:cardBackgroundColor="#E0E1E4"
+        app:cardCornerRadius="@dimen/d5"
+        app:cardElevation="@dimen/d0">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/d8"
+            android:layout_marginTop="@dimen/d5"
+            android:layout_marginRight="@dimen/d8"
+            android:layout_marginBottom="@dimen/d5"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/s12"
+            tools:text="11-12 09:58" />
+    </androidx.cardview.widget.CardView>
+
+    <com.yimaxiaoerlang.im_kit.view.messageview.SendMessageView
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <com.yimaxiaoerlang.im_kit.view.messageview.ReceiveMessageView
+        android:id="@+id/recive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+</RelativeLayout>

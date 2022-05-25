@@ -1,0 +1,42 @@
+<resources>
+    <string-array name="tab_names">
+        <item>消息</item>
+        <item>通讯录</item>
+        <item>聊天室</item>
+        <item>我</item>
+    </string-array>
+    <string name="rc_conversation_list_notice_network_unavailable">当前网络不可用，请检查你的网络设置</string>
+    <string name="seal_main_mine_about">SDK(1.0.0)</string>
+    <string name="seal_main_mine_customer_xn">客服</string>
+    <string name="seal_main_mine_feedback">意见反馈</string>
+    <string name="lang_chs">简体中文</string>
+    <string name="seal_main_mine_setting_language">多语言</string>
+    <string name="seal_main_mine_qrcode">我的二维码</string>
+    <string name="seal_main_mine_set_account">账号设置</string>
+    <string name="up_for_cancel">手指上滑，取消发送</string>
+    <string name="want_to_cancle">松开手指，取消发送</string>
+    <string name="time_too_short">录音时间过短</string>
+
+    <string name="long_click_record">长按 录音</string>
+    <string name="hang_up_finsh">松开 发送</string>
+    <string name="release_cancel">松开 取消</string>
+
+    <string name="conversation_title">YM·IM</string>
+    <string name="contact_title">通讯录</string>
+    <string name="add_friend">添加好友</string>
+    <string name="add_group">添加群聊</string>
+    <string name="start_conversation">发起会话</string>
+    <string name="create_group_chat">创建群聊</string>
+    <string name="add_user_friend">添加好友</string>
+    <string name="create_chat_room">创建聊天室</string>
+    <string name="search_chat_room">加入聊天室</string>
+    <string name="create_community">创建社群</string>
+    <string name="create_private_group">创建讨论组</string>
+
+    <string name="chat_top">置顶聊天</string>
+    <string name="chat_delete">删除聊天</string>
+    <string name="quit_chat_top">取消置顶</string>
+    <string name="clear_conversation_message">清空消息</string>
+    <string name="sure">确定</string>
+    <string name="welcome_hint">您好，\n欢迎来到译码小二郎</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_name"
+        style="@style/TextStyle.Alignment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/apply"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/default_padding"
+        android:layout_marginRight="@dimen/default_padding"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:text="聊天室1"
+        android:textColor="@color/seal_userinfo_item_name_text"
+        android:textSize="@dimen/seal_userinfo_item_name_text_size" />
+
+    <com.allen.library.shape.ShapeTextView
+        android:id="@+id/apply"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        app:shapeCornersRadius="5dp"
+        app:shapeSolidColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:text="加入聊天室"
+        android:textSize="14sp"
+        android:textColor="@color/white"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

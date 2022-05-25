@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="common_divider">#dfdfdd</color>
+    <color name="rc_secondary_color">#A0A5AB</color>
+    <color name="rc_notice_error_bg">#FFDFDF</color>
+    <color name="rc_text_main_color">#111F2C</color>
+    <color name="rc_divider_color">#E3E5E6</color>
+    <color name="rc_auxiliary_color">#c7cbce</color>
+    <color name="seal_contact_dialog_text_color">#ffffffff</color>
+    <color name="seal_userinfo_item_name_text">#111F2C</color>
+    <color name="seal_setting_item_divider">#FFE3E5E6</color>
+    <color name="black">#FF000000</color>
+    <color name="seal_setting_item_content">#353535</color>
+    <color name="seal_setting_item_value">#666666</color>
+    <color name="colorRedBg">#fa5148</color>
+    <color name="read_dot_bg">#f74c31</color>
+    <color name="action_bar_title_color">#202020</color>
+    <color name="text_color_gray">#696969</color>
+    <color name="red">#F43C3E</color>
+    <color name="color222">#222222</color>
+    <color name="color999">#999999</color>
+    <color name="backgroundColor">#F9F9F9</color>
+    <color name="transparent">#00000000</color>
+    <color name="background_color">#f1f1f1</color>
+    <color name="core_popup_card_line_bg">#E4E5E9</color>
+    <color name="core_btn_normal_color">#FF147AFF</color>
+    <color name="core_btn_pressed_color">#FF0064E7</color>
+</resources>

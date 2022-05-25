@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f5f6f9"
+    android:orientation="vertical"
+    android:padding="@dimen/d10"
+    android:paddingBottom="@dimen/d10">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_sound_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d5"
+            android:src="@mipmap/inputbar_voice" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d5"
+            android:layout_marginRight="@dimen/d5"
+            android:layout_weight="1"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/d5"
+            app:cardElevation="@dimen/d0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/d50"
+                android:orientation="horizontal">
+
+                <com.yimaxiaoerlang.im_kit.view.AudioRecordButton
+                    android:id="@+id/audioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/d30"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="按住 说话"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/s15"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/message_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:imeOptions="actionSend"
+                    android:inputType="text"
+                    android:maxHeight="@dimen/d150"
+                    android:minHeight="@dimen/d30"
+                    android:textSize="@dimen/s15"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/iv_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/inputbar_emoji" />
+
+        <ImageView
+            android:id="@+id/menu_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/d5"
+            android:layout_marginRight="@dimen/d5"
+            android:src="@mipmap/inputbar_add" />
+    </LinearLayout>
+    <!--表情区-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.lqr.emoji.EmotionLayout
+            android:id="@+id/sb_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_margin="15dp"
+            android:text="发送"/>
+
+    </FrameLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="@dimen/d200"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/menu_photo"
+            android:layout_width="@dimen/d58"
+            android:layout_height="@dimen/d58"
+            android:layout_marginLeft="@dimen/d20"
+            android:layout_marginTop="@dimen/d20"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/xiangce"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d5"
+            android:text="照片"
+            android:textColor="@color/black"
+            android:textSize="@dimen/s13"
+            app:layout_constraintLeft_toLeftOf="@id/menu_photo"
+            app:layout_constraintRight_toRightOf="@id/menu_photo"
+            app:layout_constraintTop_toBottomOf="@id/menu_photo" />
+
+        <ImageView
+            android:id="@+id/menu_cmera"
+            android:layout_width="@dimen/d58"
+            android:layout_height="@dimen/d58"
+            android:layout_marginLeft="@dimen/d20"
+            android:layout_marginTop="@dimen/d20"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/paishe"
+            app:layout_constraintLeft_toRightOf="@id/menu_photo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d5"
+            android:text="拍摄"
+            android:textColor="@color/black"
+            android:textSize="@dimen/s13"
+            app:layout_constraintLeft_toLeftOf="@id/menu_cmera"
+            app:layout_constraintRight_toRightOf="@id/menu_cmera"
+            app:layout_constraintTop_toBottomOf="@id/menu_cmera" />
+
+        <ImageView
+            android:id="@+id/menu_call"
+            android:layout_width="@dimen/d58"
+            android:layout_height="@dimen/d58"
+            android:layout_marginLeft="@dimen/d20"
+            android:layout_marginTop="@dimen/d20"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/tonghua"
+            app:layout_constraintLeft_toRightOf="@id/menu_cmera"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d5"
+            android:text="通话"
+            android:textColor="@color/black"
+            android:textSize="@dimen/s13"
+            app:layout_constraintLeft_toLeftOf="@id/menu_call"
+            app:layout_constraintRight_toRightOf="@id/menu_call"
+            app:layout_constraintTop_toBottomOf="@id/menu_call" />
+
+        <ImageView
+            android:id="@+id/menu_heka"
+            android:layout_width="@dimen/d58"
+            android:layout_height="@dimen/d58"
+            android:layout_marginLeft="@dimen/d20"
+            android:layout_marginTop="@dimen/d20"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/heka"
+            app:layout_constraintLeft_toRightOf="@id/menu_call"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/d5"
+            android:text="贺卡"
+            android:textColor="@color/black"
+            android:textSize="@dimen/s13"
+            app:layout_constraintLeft_toLeftOf="@id/menu_heka"
+            app:layout_constraintRight_toRightOf="@id/menu_heka"
+            app:layout_constraintTop_toBottomOf="@id/menu_heka" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
