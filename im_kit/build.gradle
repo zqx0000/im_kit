@@ -52,10 +52,9 @@ afterEvaluate {
 
 dependencies {
 
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation fileTree(dir: '../im_kit/libs', include: ['module_camera-release.aar'])
-    implementation fileTree(dir: '../im_kit/libs', include: ['module_emoji-release.aar'])
     implementation 'com.wuhenzhizao:titlebar:1.2.0'
+    implementation 'com.gitee.yimaxiaoerlang:module_camera:1.0.0'
+    implementation 'com.gitee.yimaxiaoerlang:emoji:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:im_core:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:rtc_core:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:rtc_kit:1.0.0'
