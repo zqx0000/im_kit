@@ -130,17 +130,15 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
                     finish();
                 } else if (action == CommonTitleBar.ACTION_RIGHT_BUTTON) {
                     //设置
-                    sendSeeting();
-                    finish();
 
-//                    if (conversation.getConversationType() == YMConversation.ConversationType.GROUP) {
-//                        GroupInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
-//                    } else if (conversation.getConversationType() == YMConversation.ConversationType.CHATROOM) {
-//                        ChatRoomInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
-//                    } else {
-//                        Log.e(TAG, "onClicked: " + conversation.getTargetId());
-//                        FriendProfileActivity.start(conversation.getTargetId(), conversation.getGroupId(), ChatActivity.this);
-//                    }
+                    if (conversation.getConversationType() == YMConversation.ConversationType.GROUP) {
+                        GroupInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
+                    } else if (conversation.getConversationType() == YMConversation.ConversationType.CHATROOM) {
+                        ChatRoomInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
+                    } else {
+                        Log.e(TAG, "onClicked: " + conversation.getTargetId());
+                        FriendProfileActivity.start(conversation.getTargetId(), conversation.getGroupId(), ChatActivity.this);
+                    }
                 }
             }
         });
@@ -657,14 +655,14 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
         intent.putExtra("gid", conversationInfo.getGroupId());
         intent.putExtra("name", conversationInfo.getConversationTitle());
         sendBroadcast(intent);
-        finish();
+//        finish();
     }
 
     private void sendCustomMessage(String json) {
         Intent intent = new Intent("com.mize.young.angel.custom_message");
         intent.putExtra("json", json);
         sendBroadcast(intent);
-        finish();
+//        finish();
     }
 
     /**
