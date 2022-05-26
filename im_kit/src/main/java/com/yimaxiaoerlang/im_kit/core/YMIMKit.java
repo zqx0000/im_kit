@@ -47,18 +47,30 @@ public class YMIMKit {
 
     }
 
-    public void config(Context context, YMConfig ymIMConfig) {
+    public void setAppContext(Context context) {
+        appContext = context;
+    }
+
+    public void init(YMConfig ymIMConfig, YMConfig ymRLConfig) {
         this.imAppKey = ymIMConfig.getAppkey();
         this.imAppSecret = ymIMConfig.getAppsecret();
-        appContext = context;
+        YMIMClient.getInstance().initSDKWithConfig(ymIMConfig);
+        YMRLClient.getInstance().initSDKWithConfig(ymRLConfig);
+    }
+
+    public void initIM(String appKey, String appSecret) {
+        this.imAppKey = appKey;
+        this.imAppSecret = appSecret;
+        YMConfig ymIMConfig = new YMConfig();
+        ymIMConfig.setAppsecret(appSecret);
+        ymIMConfig.setAppkey(appKey);
         YMIMClient.getInstance().initSDKWithConfig(ymIMConfig);
     }
 
-    public void config(Context context, YMConfig ymIMConfig, YMConfig ymRLConfig) {
-        this.imAppKey = ymIMConfig.getAppkey();
-        this.imAppSecret = ymIMConfig.getAppsecret();
-        appContext = context;
-        YMIMClient.getInstance().initSDKWithConfig(ymIMConfig);
+    public void initRTM(String appKey, String appSecret) {
+        YMConfig ymRLConfig = new YMConfig();
+        ymRLConfig.setAppsecret(appSecret);
+        ymRLConfig.setAppkey(appKey);
         YMRLClient.getInstance().initSDKWithConfig(ymRLConfig);
     }
 
