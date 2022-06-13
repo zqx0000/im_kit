@@ -5,6 +5,9 @@
         <item>聊天室</item>
         <item>我</item>
     </string-array>
+    <string name="action_photo">照片</string>
+    <string name="action_camera">拍摄</string>
+    <string name="action_call">通话</string>
     <string name="rc_conversation_list_notice_network_unavailable">当前网络不可用，请检查你的网络设置</string>
     <string name="seal_main_mine_about">SDK(1.0.0)</string>
     <string name="seal_main_mine_customer_xn">客服</string>

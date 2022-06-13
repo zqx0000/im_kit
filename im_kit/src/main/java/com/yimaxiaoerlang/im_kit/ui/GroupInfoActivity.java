@@ -107,7 +107,7 @@ public class GroupInfoActivity extends AppCompatActivity {
         TextView groupIdTv = findViewById(R.id.user_id);
         ShapeTextView edit = findViewById(R.id.edit);
         TextView groupMemberCount = findViewById(R.id.groupMemberCount);
-        RecyclerView groupMemberRecycler = findViewById(R.id.groupMemberRecycler);
+        RecyclerView groupMemberRecycler = findViewById(R.id.chatRecycler);
         LinearLayout groupMemberLayout = findViewById(R.id.groupMemberLayout);
         LinearLayout addMember = findViewById(R.id.addMember);
         SwitchCompat topSw = findViewById(R.id.topSw);

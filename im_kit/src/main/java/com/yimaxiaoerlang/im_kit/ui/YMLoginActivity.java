@@ -28,16 +28,6 @@ public class YMLoginActivity extends AppCompatActivity implements LoginCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         SystemBarHelper.immersiveStatusBar(this, 0f);
-        YMConfig ymIMConfig = new YMConfig();
-        ymIMConfig.setAppsecret("A2K8ac23wnPK0427i2ss");
-        ymIMConfig.setAppkey("7ZC217279tDS3Z659hnw");
-        YMConfig ymRLConfig = new YMConfig();
-        ymRLConfig.setAppsecret("Sn086IK803nc30zNfL95");
-        ymRLConfig.setAppkey("O5nh8biA4t78JJ6hd160");
-        YMIMKit.getInstance().setAppContext(this);
-        YMIMKit.getInstance().init(ymIMConfig, ymIMConfig);
-        YMIMKit.getInstance().configAddress("https://im.yuefuximai.com", "wss://im.yuefuximai.com/websocket", "wss://im.yuefuximai.com/signal");
-
         initView();
     }
 

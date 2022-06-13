@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,11 +17,19 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.lqr.emoji.EmotionLayout;
 import com.yimaxiaoerlang.im_kit.R;
+import com.yimaxiaoerlang.im_kit.core.YMIMKit;
 import com.yimaxiaoerlang.im_kit.utils.PermissionsCallback;
 import com.yimaxiaoerlang.im_kit.utils.PermissionsCommon;
+import com.yimaxiaoerlang.im_kit.view.inputmore.InputMoreActionUnit;
+import com.yimaxiaoerlang.im_kit.view.inputmore.InputMoreFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MessageInpitView extends LinearLayout {
     private MessageInputListener listener;
@@ -31,7 +40,11 @@ public class MessageInpitView extends LinearLayout {
     private ConstraintLayout menuLayout;
     private EmotionLayout emojiLayout;
     private Button sendBtn;
-
+    private View inputMoreView;
+    protected List<InputMoreActionUnit> mInputMoreActionList = new ArrayList<>();
+    private FragmentManager mFragmentManager;
+    private InputMoreFragment mInputMoreFragment;
+    private FragmentActivity mActivity;
 
     public void setListener(MessageInputListener listener) {
         this.listener = listener;
@@ -48,9 +61,11 @@ public class MessageInpitView extends LinearLayout {
     }
 
     private void init() {
+        assembleActions();
+        mActivity = (FragmentActivity) getContext();
         LayoutInflater.from(getContext()).inflate(R.layout.view_chat_bottom, this);
         menuLayout = findViewById(R.id.menu_layout);
-
+        inputMoreView = findViewById(R.id.input_more_view);
         //文字部分
         textInputView = findViewById(R.id.message_input);
         textInputView.setHorizontallyScrolling(false);
@@ -93,17 +108,6 @@ public class MessageInpitView extends LinearLayout {
                 return false;
             }
         });
-        // 发送按钮
-        sendBtn = findViewById(R.id.btn_send);
-        sendBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null && !textInputView.getText().toString().isEmpty()) {
-                    listener.sendText(textInputView.getText().toString());
-                    textInputView.setText("");
-                }
-            }
-        });
 
         //语音部分
         soundImage = findViewById(R.id.img_sound_layout);
@@ -137,7 +141,7 @@ public class MessageInpitView extends LinearLayout {
         showMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                menuVisibility(menuLayout.getVisibility() != VISIBLE);
+                menuVisibility(inputMoreView.getVisibility() != VISIBLE);
             }
         });
 
@@ -147,7 +151,7 @@ public class MessageInpitView extends LinearLayout {
                 new PermissionsCommon((FragmentActivity) getContext()).requestStorage(new PermissionsCallback() {
                     @Override
                     public void onSuccess() {
-                        if (listener != null) {
+                        if (listener!=null){
                             listener.selectPhoto();
                         }
                     }
@@ -163,7 +167,7 @@ public class MessageInpitView extends LinearLayout {
                 new PermissionsCommon((FragmentActivity) getContext()).requestCAMERA(new PermissionsCallback() {
                     @Override
                     public void onSuccess() {
-                        if (listener != null) {
+                        if (listener!=null){
                             listener.shoot();
                         }
                     }
@@ -179,11 +183,22 @@ public class MessageInpitView extends LinearLayout {
                 new PermissionsCommon((FragmentActivity) getContext()).requestCAMERA(new PermissionsCallback() {
                     @Override
                     public void onSuccess() {
-                        if (listener != null) {
+                        if (listener!=null){
                             listener.call();
                         }
                     }
                 });
+            }
+        });
+        // 发送按钮
+        sendBtn = findViewById(R.id.btn_send);
+        sendBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null && !textInputView.getText().toString().isEmpty()) {
+                    listener.sendText(textInputView.getText().toString());
+                    textInputView.setText("");
+                }
             }
         });
         //表情
@@ -197,15 +212,101 @@ public class MessageInpitView extends LinearLayout {
                 emojiVisibility(emojiLayout.getVisibility() != VISIBLE);
             }
         });
-        findViewById(R.id.menu_heka).setOnClickListener(new OnClickListener() {
+
+    }
+
+    private void showInputMoreLayout() {
+        if (mFragmentManager == null) {
+            mFragmentManager = mActivity.getSupportFragmentManager();
+        }
+        if (mInputMoreFragment == null) {
+            mInputMoreFragment = new InputMoreFragment();
+        }
+
+        mInputMoreFragment.setActions(mInputMoreActionList);
+        hideSoftInput();
+        inputMoreView.setVisibility(View.VISIBLE);
+        mFragmentManager.beginTransaction().replace(R.id.input_more_view, mInputMoreFragment).commitAllowingStateLoss();
+    }
+
+    private void hideInputMoreLayout() {
+        inputMoreView.setVisibility(View.GONE);
+    }
+
+    protected void assembleActions() {
+        mInputMoreActionList.clear();
+        InputMoreActionUnit action = new InputMoreActionUnit();
+        action.setIconResId(R.mipmap.xiangce);
+        action.setTitleId(R.string.action_photo);
+        action.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listener != null) {
-                    listener.greetingCard();
-                }
+                new PermissionsCommon((FragmentActivity) getContext()).requestStorage(new PermissionsCallback() {
+                    @Override
+                    public void onSuccess() {
+                        if (listener!=null){
+                            listener.selectPhoto();
+                        }
+                    }
+                });
             }
         });
+        mInputMoreActionList.add(action);
+        action = new InputMoreActionUnit();
+        action.setIconResId(R.mipmap.paishe);
+        action.setTitleId(R.string.action_camera);
+        action.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PermissionsCommon((FragmentActivity) getContext()).requestStorage(new PermissionsCallback() {
+                    @Override
+                    public void onSuccess() {
+                        if (listener!=null){
+                            listener.shoot();
+                        }
+                    }
+                });
+            }
+        });
+        mInputMoreActionList.add(action);
+        if (!YMIMKit.getIsOpenAV()) return;
+        action = new InputMoreActionUnit();
+        action.setIconResId(R.mipmap.tonghua);
+        action.setTitleId(R.string.action_call);
+        action.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new PermissionsCommon((FragmentActivity) getContext()).requestStorage(new PermissionsCallback() {
+                    @Override
+                    public void onSuccess() {
+                        if (listener!=null){
+                            listener.call();
+                        }
+                    }
+                });
+            }
+        });
+        mInputMoreActionList.add(action);
 
+    }
+
+    public void addInputMoreAction(InputMoreActionUnit... actions) {
+        if (mFragmentManager == null) {
+            mFragmentManager = mActivity.getSupportFragmentManager();
+        }
+        if (mInputMoreFragment == null) {
+            mInputMoreFragment = new InputMoreFragment();
+        }
+        mInputMoreActionList.addAll(Arrays.asList(actions));
+        mInputMoreFragment.setActions(mInputMoreActionList);
+        mFragmentManager.beginTransaction().replace(R.id.input_more_view, mInputMoreFragment).commitAllowingStateLoss();
+    }
+
+    public void hideSoftInput() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(textInputView.getWindowToken(), 0);
+        textInputView.clearFocus();
+        inputMoreView.setVisibility(View.GONE);
     }
 
     private void emojiVisibility(boolean show) {
@@ -234,10 +335,12 @@ public class MessageInpitView extends LinearLayout {
 
     private void menuVisibility(boolean show) {
         if (show) {
-            menuLayout.setVisibility(VISIBLE);
+            menuLayout.setVisibility(GONE);
             emojiVisibility(false);
+            showInputMoreLayout();
         } else {
             menuLayout.setVisibility(GONE);
+            hideInputMoreLayout();
         }
     }
 }

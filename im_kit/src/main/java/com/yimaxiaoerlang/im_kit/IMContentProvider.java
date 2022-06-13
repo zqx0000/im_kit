@@ -12,7 +12,7 @@ import com.lqr.emoji.IImageLoader;
 import com.lqr.emoji.LQREmotionKit;
 import com.yimaxiaoerlang.im_kit.utils.SPUtil;
 import com.yimaxiaoerlang.im_kit.utils.ToastUtils;
-import com.yimaxiaoerlang.rtc_lib.YMRLClient;
+//import com.yimaxiaoerlang.rtc_lib.YMRLClient;
 import com.squareup.picasso.Picasso;
 import com.yimaxiaoerlang.ym_base.YMConfig;
 import com.zlw.main.recorderlib.RecordManager;
@@ -82,11 +82,6 @@ public class IMContentProvider extends ContentProvider {
 
         RecordManager.getInstance().init((Application) getContext(), true);
         RecordManager.getInstance().changeFormat(RecordConfig.RecordFormat.MP3);
-
-        YMConfig config = new YMConfig();
-        config.setAppkey("appKey");
-        config.setAppsecret("appSecret");
-        YMRLClient.getInstance().initSDKWithConfig(config);
         return true;
     }
 

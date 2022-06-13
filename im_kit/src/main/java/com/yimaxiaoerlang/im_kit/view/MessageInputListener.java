@@ -11,5 +11,4 @@ public interface MessageInputListener {
 
     void call();
 
-    void greetingCard();
 }

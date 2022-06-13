@@ -38,6 +38,7 @@ public class YMIMKit {
     private String imAppSecret = "A2K8ac23wnPK0427i2ss";
     private LoginCallback loginCallback;
     private static Context appContext;
+    private static boolean isOpenAV = false;// 是否开通音视频
 
     public static YMIMKit getInstance() {
         return ourInstance;
@@ -56,6 +57,7 @@ public class YMIMKit {
         this.imAppSecret = ymIMConfig.getAppsecret();
         YMIMClient.getInstance().initSDKWithConfig(ymIMConfig);
         YMRLClient.getInstance().initSDKWithConfig(ymRLConfig);
+        isOpenAV = true;
     }
 
     public void initIM(String appKey, String appSecret) {
@@ -72,10 +74,15 @@ public class YMIMKit {
         ymRLConfig.setAppsecret(appSecret);
         ymRLConfig.setAppkey(appKey);
         YMRLClient.getInstance().initSDKWithConfig(ymRLConfig);
+        isOpenAV = true;
     }
 
     public static Context getAppContext() {
         return appContext;
+    }
+
+    public static boolean getIsOpenAV() {
+        return isOpenAV;
     }
 
     public void configAddress(String api, String imSocketAddress, String signalSocketAddress) {
@@ -106,7 +113,7 @@ public class YMIMKit {
 
                     }
                 });
-        YMRLClient.getInstance().setSocketAddress(signalSocketAddress);
+        if (isOpenAV) YMRLClient.getInstance().setSocketAddress(signalSocketAddress);
     }
 
     public void login(SelectUser selectUser, LoginCallback loginCallback) {
@@ -154,7 +161,7 @@ public class YMIMKit {
     public void login(LoginResult loginResult, String signallingToken, LoginCallback loginCallback) {
 
         this.loginCallback = loginCallback;
-        if (loginResult==null){
+        if (loginResult == null) {
             loginCallback.loginError();
             return;
         }
@@ -170,10 +177,13 @@ public class YMIMKit {
             @Override
             public void onSuccess(Object obj) {
                 Log.e(TAG, "登录成功");
-                connectRTC(signallingToken, loginResult.getUid());
-//                if (loginCallback != null) {
-//                    loginCallback.loginSuccess();
-//                }
+                if (isOpenAV) {
+                    connectRTC(signallingToken, loginResult.getUid());
+                } else {
+                    if (loginCallback != null) {
+                        loginCallback.loginSuccess();
+                    }
+                }
             }
 
 
@@ -198,10 +208,13 @@ public class YMIMKit {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.e("zgj", "成功");
-                connectRTC(loginResult.getToken(), loginResult.getUid());
-//                if (loginCallback != null) {
-//                    loginCallback.loginSuccess();
-//                }
+                if (isOpenAV) {
+                    connectRTC(loginResult.getToken(), loginResult.getUid());
+                } else {
+                    if (loginCallback != null) {
+                        loginCallback.loginSuccess();
+                    }
+                }
             }
 
             @Override

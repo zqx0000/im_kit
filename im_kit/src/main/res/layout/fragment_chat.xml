@@ -9,16 +9,6 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:centerType="textView"
-        app:rightImageResource="@mipmap/seeting"
-        app:rightType="imageButton"
-        app:leftType="imageButton" />
-
-    <!--    <com.scwang.smartrefresh.layout.SmartRefreshLayout-->
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

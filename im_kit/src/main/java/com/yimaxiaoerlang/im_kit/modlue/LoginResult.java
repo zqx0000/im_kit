@@ -3,12 +3,6 @@ package com.yimaxiaoerlang.im_kit.modlue;
 import com.yimaxiaoerlang.rtc_kit.model.CallUser;
 
 public class LoginResult {
-//    val expireTime: String,
-//    var phone: String?="",
-//    val token: String,
-//    val uid: Int,
-//    val userAvatar: String,
-//    val username: String
 
     private String expireTime;
     private String phone;

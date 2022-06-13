@@ -1,62 +1,60 @@
 package com.yimaxiaoerlang.im_kit.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.yimaxiaoerlang.im_kit.R;
-import com.yimaxiaoerlang.im_kit.dialog.LodingUtils;
-import com.yimaxiaoerlang.im_kit.modlue.PrewImage;
-import com.yimaxiaoerlang.im_kit.utils.Image;
-import com.yimaxiaoerlang.im_kit.utils.ImageSize;
-import com.yimaxiaoerlang.im_kit.utils.MediaFileUtil;
-import com.yimaxiaoerlang.im_kit.utils.MessageReceiveListener;
-import com.yimaxiaoerlang.im_kit.utils.MessageCenter;
-import com.yimaxiaoerlang.im_kit.utils.SavePhoto;
-import com.yimaxiaoerlang.im_kit.utils.TestImageLoader;
-import com.yimaxiaoerlang.im_kit.utils.ToastUtils;
-import com.yimaxiaoerlang.im_kit.utils.UserUtils;
-import com.yimaxiaoerlang.im_kit.view.MessageInpitView;
-import com.yimaxiaoerlang.im_kit.view.MessageInputListener;
-import com.yimaxiaoerlang.im_kit.view.inputmore.InputMoreActionUnit;
-import com.yimaxiaoerlang.im_kit.view.messageview.ItemMessageClickListener;
-import com.yimaxiaoerlang.im_kit.view.messageview.MessageItemView;
 import com.previewlibrary.GPreviewBuilder;
 import com.previewlibrary.ZoomMediaLoader;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.impl.ScrollBoundaryDeciderAdapter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.wuhenzhizao.titlebar.utils.KeyboardConflictCompat;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-import com.yimaxiaoerlang.rtc_kit.model.CallUser;
-import com.yimaxiaoerlang.rtc_kit.ui.CallPersonSelectActivity;
-import com.yimaxiaoerlang.rtc_kit.ui.CallSingleActivity;
 import com.yimaxiaoerlang.im_core.core.YMIMClient;
 import com.yimaxiaoerlang.im_core.core.other.YMResultCallback;
+import com.yimaxiaoerlang.im_core.model.YMGroupEntity;
+import com.yimaxiaoerlang.im_core.model.YMPersonnel;
 import com.yimaxiaoerlang.im_core.model.conversation.YMConversation;
 import com.yimaxiaoerlang.im_core.model.message.YMImageMessage;
 import com.yimaxiaoerlang.im_core.model.message.YMMessage;
 import com.yimaxiaoerlang.im_core.model.message.YMTextMessage;
 import com.yimaxiaoerlang.im_core.model.message.YMVideoMessage;
 import com.yimaxiaoerlang.im_core.model.message.YMVoiceMessage;
-import com.yimaxiaoerlang.im_core.model.YMPersonnel;
+import com.yimaxiaoerlang.im_kit.R;
+import com.yimaxiaoerlang.im_kit.dialog.LodingUtils;
+import com.yimaxiaoerlang.im_kit.modlue.PrewImage;
+import com.yimaxiaoerlang.im_kit.utils.Image;
+import com.yimaxiaoerlang.im_kit.utils.ImageSize;
+import com.yimaxiaoerlang.im_kit.utils.MediaFileUtil;
+import com.yimaxiaoerlang.im_kit.utils.MessageCenter;
+import com.yimaxiaoerlang.im_kit.utils.MessageReceiveListener;
+import com.yimaxiaoerlang.im_kit.utils.SavePhoto;
+import com.yimaxiaoerlang.im_kit.utils.TestImageLoader;
+import com.yimaxiaoerlang.im_kit.utils.ToastUtils;
+import com.yimaxiaoerlang.im_kit.utils.UserUtils;
+import com.yimaxiaoerlang.im_kit.view.MessageInpitView;
+import com.yimaxiaoerlang.im_kit.view.MessageInputListener;
+import com.yimaxiaoerlang.im_kit.view.messageview.ItemMessageClickListener;
+import com.yimaxiaoerlang.im_kit.view.messageview.MessageItemView;
+import com.yimaxiaoerlang.rtc_kit.model.CallUser;
+import com.yimaxiaoerlang.rtc_kit.ui.CallPersonSelectActivity;
+import com.yimaxiaoerlang.rtc_kit.ui.CallSingleActivity;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
@@ -66,15 +64,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class ChatFragment extends Fragment implements MessageReceiveListener {
 
-public class ChatActivity extends FragmentActivity implements MessageReceiveListener {
-    private static final String TAG = "ChatActivity";
-    private YMConversation conversation;
-    private YMConversation conversationInfo;
+    private static final String TAG = ChatFragment.class.getSimpleName();
+    private YMGroupEntity conversationInfo;
     private int index = 1;
     private boolean nodata = false;
     private int CMERA_REQUEST_CODE = 220;
     private int PHOTO_REQUEST_CODE = 222;
+    private YMConversation.ConversationType conversationType = YMConversation.ConversationType.PRIVATE;
+    private String conversationId = "";
+
+    public static ChatFragment newInstance(int conversationType, String gid) {
+
+        Bundle args = new Bundle();
+        args.putInt("conversationType", conversationType);
+        args.putString("gid", gid);
+        ChatFragment fragment = new ChatFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private BaseQuickAdapter<YMMessage, BaseViewHolder> adapter = new BaseQuickAdapter<YMMessage, BaseViewHolder>(R.layout.item_message) {
         @Override
@@ -84,7 +93,7 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
                     .setItemClickListener(new ItemMessageClickListener() {
                         @Override
                         public void video(String url) {
-                            Intent intent = new Intent(ChatActivity.this, PlayVideoActivity.class);
+                            Intent intent = new Intent(requireContext(), PlayVideoActivity.class);
                             intent.putExtra("url", url);
                             startActivity(intent);
                         }
@@ -106,47 +115,29 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
     private ClassicsFooter footer;
     private SmartRefreshLayout refreshLayout;
     private MessageInpitView inputView;
-    private CommonTitleBar titleBar;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        initView(view);
+        return view;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
-        initView();
         initData();
     }
 
-    private void initView() {
-        recycler = findViewById(R.id.chatRecycler);
-        footer = findViewById(R.id.footer);
-        refreshLayout = findViewById(R.id.refreshLayout);
-        inputView = findViewById(R.id.input_view);
-        titleBar = findViewById(R.id.titlebar);
-
-        titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
-            @Override
-            public void onClicked(View v, int action, String extra) {
-                if (action == CommonTitleBar.ACTION_LEFT_BUTTON) {
-                    finish();
-                } else if (action == CommonTitleBar.ACTION_RIGHT_BUTTON) {
-                    //设置
-
-                    if (conversation.getConversationType() == YMConversation.ConversationType.GROUP) {
-                        GroupInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
-                    } else if (conversation.getConversationType() == YMConversation.ConversationType.CHATROOM) {
-                        ChatRoomInfoActivity.start(conversation.getGroupId(), ChatActivity.this);
-                    } else {
-                        Log.e(TAG, "onClicked: " + conversation.getTargetId());
-                        FriendProfileActivity.start(conversation.getTargetId(), conversation.getGroupId(), ChatActivity.this);
-                    }
-                }
-            }
-        });
+    private void initView(View root) {
+        recycler = root.findViewById(R.id.chatRecycler);
+        footer = root.findViewById(R.id.footer);
+        refreshLayout = root.findViewById(R.id.refreshLayout);
+        inputView = root.findViewById(R.id.input_view);
 
 
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-//        ((LinearLayoutManager) recycler.getLayoutManager()).setStackFromEnd(true);
+        recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         View arrow = footer.findViewById(ClassicsFooter.ID_IMAGE_ARROW);
         arrow.setScaleY(-1f);//必须设置
 
@@ -196,7 +187,7 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
 
             @Override
             public void selectPhoto() {
-                Matisse.from(ChatActivity.this)
+                Matisse.from(requireActivity())
                         .choose(MimeType.ofAll())
                         .countable(true)
                         .maxSelectable(9)
@@ -212,30 +203,30 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
             @Override
             public void shoot() {
                 startActivityForResult(
-                        new Intent(ChatActivity.this, CmeraActivity.class),
+                        new Intent(requireContext(), CmeraActivity.class),
                         CMERA_REQUEST_CODE
                 );
             }
 
             @Override
             public void call() {
-                if (conversationInfo.getConversationType() == YMConversation.ConversationType.GROUP) {
+                if (conversationType == YMConversation.ConversationType.GROUP) {
 
-                    if (conversationInfo == null || conversation.getPersonnels() == null || conversation.getPersonnels().isEmpty()) {
+                    if (conversationInfo == null || conversationInfo.getUserList() == null || conversationInfo.getUserList().isEmpty()) {
                         ToastUtils.normal("没有可以呼叫的人");
                         return;
                     }
                     ArrayList<CallUser> users = new ArrayList<>();
 
-                    for (YMPersonnel personnel : conversation.getPersonnels()) {
-                        if (!personnel.getUid().equals(UserUtils.getInstance().getUser().getUid())) {
-                            users.add(new CallUser(personnel.getUid(), personnel.getName(), personnel.getAvatar()));
+                    for (YMGroupEntity.UserListBean personnel : conversationInfo.getUserList()) {
+                        if (!personnel.getUserId().equals(UserUtils.getInstance().getUser().getUid())) {
+                            users.add(new CallUser(personnel.getUserId(), personnel.getUsername(), personnel.getUserAvatar()));
                         }
                     }
                     users.add(new CallUser(UserUtils.getInstance().getUser().getUid(), UserUtils.getInstance().getUser().getUsername(), UserUtils.getInstance().getUser().getUserAvatar()));
                     CallPersonSelectActivity.start(
-                            ChatActivity.this,
-                            conversationInfo.getGroupId(),
+                            requireContext(),
+                            conversationId,
                             users,
                             true
                     );
@@ -246,11 +237,11 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
                         return;
                     }
                     CallSingleActivity.call(
-                            ChatActivity.this,
-                            conversationInfo.getTargetId(),
-                            conversationInfo.getGroupId(),
-                            conversationInfo.getConversationTitle(),
-                            conversationInfo.getPortraitUrl(),
+                            requireActivity(),
+                            conversationInfo.getUserList().get(conversationInfo.getUserList().size() - 1).getUserId(),
+                            conversationInfo.getGroup().getGroupId(),
+                            conversationInfo.getGroup().getGroupName(),
+                            conversationInfo.getGroup().getGroupAvatar(),
                             true
                     );
                 }
@@ -259,52 +250,64 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
         });
     }
 
+    public View getInputView() {
+        return inputView;
+    }
+
 
     /**
      * 初始化数据
      */
     private void initData() {
-        conversation = (YMConversation) getIntent().getSerializableExtra("conversation");
-        initTitle();
-        initChat();
-    }
-
-    /**
-     * 初始化标题
-     */
-    private void initTitle() {
-        if (conversation != null) {
-            //设置标题
-            titleBar.getCenterTextView().setText(conversation.getConversationTitle());
+        conversationId = requireArguments().getString("gid");
+        int type = requireArguments().getInt("conversationType", 1);
+        switch (type) {
+            case 0:
+                conversationType = YMConversation.ConversationType.PRIVATE;
+                break;
+            case 1:
+                conversationType = YMConversation.ConversationType.GROUP;
+                break;
+            case 2:
+                conversationType = YMConversation.ConversationType.CHATROOM;
+                break;
         }
+        initChat();
     }
 
     /**
      * 初始化聊天
      */
     private void initChat() {
-        if (conversation != null) {
-            Log.e(TAG, "initChat: " + conversation.getTargetId());
-            if (conversation.getConversationType() == YMConversation.ConversationType.PRIVATE) {//单聊
-                createPrivateChat(conversation.getTargetId());
-            } else if (conversation.getConversationType() == YMConversation.ConversationType.GROUP || conversation.getConversationType() == YMConversation.ConversationType.CHATROOM) {////群聊
-                conversationInfo = conversation;
-                getMessageList();
-                registerMessageReceive();
+        // 获取会话信息
+        YMIMClient.chatManager().getConversationInfoWithTargetId(conversationId, new YMResultCallback<YMGroupEntity>() {
+            @Override
+            public void onSuccess(YMGroupEntity var1) {
+                conversationInfo = var1;
+                if (conversationInfo != null) {
+                    LodingUtils.getInstance().stopLoading();
+                    getMessageList();
+                    registerMessageReceive();
+                } else {
+                    ToastUtils.normal("获取信息错误不能聊天");
+                }
             }
 
-        }
+            @Override
+            public void onError(int errorCode) {
 
+            }
+        });
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == PHOTO_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == PHOTO_REQUEST_CODE) {
             List<String> obtainPathResult = Matisse.obtainPathResult(data);
             if (obtainPathResult != null) {
                 for (String s : obtainPathResult) {
@@ -346,67 +349,18 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
 
     }
 
-    private void createPrivateChat(String targetId) {
-        YMIMClient.chatManager().joinPrivateChatWithTargetId(targetId, new
-                YMResultCallback<YMConversation>() {
-                    @Override
-                    public void onSuccess(YMConversation var1) {
-
-                        getConversationWithTargetId(var1.getGroupId());
-                    }
-
-                    public void onError(int errorCode) {
-
-                    }
-
-                });
-    }
-
-    /**
-     * 获取群聊信息
-     */
-    private void getConversationWithTargetId(String groupId) {
-
-        YMIMClient.chatManager().getConversationWithTargetId(groupId, new
-                YMResultCallback<YMConversation>() {
-                    @Override
-                    public void onSuccess(YMConversation conversation) {
-                        conversation.getUnreadMessageCount();
-//                conversationInfo = var1
-                        if (conversation == null) {
-                            ToastUtils.normal("获取信息错误不能聊天");
-                            finish();
-                            return;
-                        }
-                        LodingUtils.getInstance().stopLoading();
-                        conversationInfo = conversation;
-                        getMessageList();
-                        registerMessageReceive();
-
-                    }
-
-                    @Override
-                    public void onError(int errorCode) {
-                        LodingUtils.getInstance().stopLoading();
-                        ToastUtils.normal("发生错误");
-                    }
-
-                });
-    }
-
-
     /**
      * 注册接收消息的监听
      */
     private void registerMessageReceive() {
-        MessageCenter.getInstance().setChatReceiveListener(conversationInfo.getGroupId(), this);
+        MessageCenter.getInstance().setChatReceiveListener(conversationId, this);
     }
 
     /**
      * 获取消息列表
      */
     private void getMessageList() {
-        YMIMClient.chatManager().getHistoryMessageWithTargetId(conversationInfo.getGroupId(), index, 20, new
+        YMIMClient.chatManager().getHistoryMessageWithTargetId(conversationId, index, 20, new
                 YMResultCallback<List<YMMessage>>() {
                     @Override
                     public void onSuccess(List<YMMessage> var1) {
@@ -466,7 +420,6 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
     public void onDestroy() {
         super.onDestroy();
         MessageCenter.getInstance().cleanChatReceiveListener();
-        sendDestroy();
     }
 
     @Override
@@ -489,7 +442,7 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
      */
     private void sendTextMessgae(String msg) {
         YMTextMessage content = YMTextMessage.create(msg);
-        YMMessage message = new YMMessage(conversationInfo.getGroupId(), content);
+        YMMessage message = new YMMessage(conversationId, content);
         sendMessage(message);
     }
 
@@ -498,7 +451,7 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
      */
     private void sendVoiceMessgae(String file, int duration) {
         YMVoiceMessage content = new YMVoiceMessage(duration, file);
-        YMMessage message = new YMMessage(conversationInfo.getGroupId(), content);
+        YMMessage message = new YMMessage(conversationId, content);
         sendMessage(message);
     }
 
@@ -510,7 +463,7 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
         ImageSize size = Image.imageSize(file);
         content.setWidth(size.getWidth());
         content.setHeight(size.getHeight());
-        YMMessage message = new YMMessage(conversationInfo.getGroupId(), content);
+        YMMessage message = new YMMessage(conversationId, content);
         sendMessage(message);
     }
 
@@ -531,15 +484,15 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
 
 
         //获取录音保存位置
-        String dir = getCacheDir() + "/thumb/";
+        String dir = requireActivity().getCacheDir() + "/thumb/";
         File newFile = new File(dir);
         if (!newFile.exists()) {
             newFile.mkdirs();
         }
 
-        new SavePhoto(this).saveBitmap(bitmap, "thumb.png");
+        new SavePhoto(requireContext()).saveBitmap(bitmap, "thumb.png");
         content.setLocalThumbnail(dir + "thumb.png");
-        YMMessage message = new YMMessage(conversationInfo.getGroupId(), content);
+        YMMessage message = new YMMessage(conversationId, content);
         sendMessage(message);
     }
 
@@ -558,65 +511,4 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
         });
     }
 
-    /**
-     * 自动关闭输入法
-     */
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                        hideSoftInputFromWindow(
-                                v.getWindowToken(),
-                                0
-                        );
-                if (v instanceof EditText) {
-                    v.clearFocus();
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        return getWindow().superDispatchTouchEvent(ev) ? true : onTouchEvent(ev);
-
-    }
-
-    private boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && v instanceof EditText) {
-            int[] location = new int[]{0, 0};
-            v.getLocationOnScreen(location);
-            int left = location[0];
-            int top = location[1];
-            return (event.getX() < left || event.getX() > left + v.getWidth()
-                    || event.getY() < top || event.getY() > top + v.getHeight());
-        }
-        return false;
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        KeyboardConflictCompat.assistWindow(getWindow());
-    }
-
-    /**
-     * 发送右上角事件
-     */
-    private void sendSeeting() {
-        Intent intent = new Intent("com.mize.young.angel.report");
-        intent.putExtra("uid", conversationInfo.getTargetId());
-        intent.putExtra("gid", conversationInfo.getGroupId());
-        intent.putExtra("name", conversationInfo.getConversationTitle());
-        sendBroadcast(intent);
-
-        finish();
-    }
-
-
-    /**
-     * 发送销毁事件
-     */
-    private void sendDestroy() {
-        sendBroadcast(new Intent("com.mize.young.angel.destroy"));
-    }
 }

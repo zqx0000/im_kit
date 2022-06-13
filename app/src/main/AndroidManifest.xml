@@ -3,6 +3,7 @@
     package="com.yimaxiaoerlang.im_kit">
 
     <application
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

@@ -26,4 +26,6 @@
     <color name="core_popup_card_line_bg">#E4E5E9</color>
     <color name="core_btn_normal_color">#FF147AFF</color>
     <color name="core_btn_pressed_color">#FF0064E7</color>
+    <color name="text_color_black">#000</color>
+    <color name="input_title_line_color">#D2D2D2</color>
 </resources>
