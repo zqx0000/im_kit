@@ -250,7 +250,7 @@ public class ChatFragment extends Fragment implements MessageReceiveListener {
         });
     }
 
-    public View getInputView() {
+    public MessageInpitView getInputView() {
         return inputView;
     }
 
