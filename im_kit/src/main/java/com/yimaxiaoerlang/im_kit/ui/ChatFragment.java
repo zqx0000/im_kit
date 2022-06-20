@@ -464,7 +464,7 @@ public class ChatFragment extends Fragment implements MessageReceiveListener {
         content.setWidth(size.getWidth());
         content.setHeight(size.getHeight());
         YMMessage message = new YMMessage(conversationId, content);
-        sendMessage(message);
+           sendMessage(message);
     }
 
     /**
