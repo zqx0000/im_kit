@@ -44,7 +44,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.yimaxiaoerlang'
                 artifactId = 'im_kit'
-                version = '1.0.3'
+                version = '1.0.4'
             }
         }
     }
@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.wuhenzhizao:titlebar:1.2.0'
     implementation 'com.gitee.yimaxiaoerlang:module_camera:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:emoji:1.0.0'
-    implementation 'com.gitee.yimaxiaoerlang:im_core:1.0.2'
+    implementation 'com.gitee.yimaxiaoerlang:im_core:1.0.3'
     implementation 'com.gitee.yimaxiaoerlang:rtc_core:1.0.1'
     implementation 'com.gitee.yimaxiaoerlang:rtc_kit:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:ym_base:1.0.0'

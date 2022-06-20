@@ -1,11 +1,15 @@
 package com.yimaxiaoerlang.im_kit.ui;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.yimaxiaoerlang.im_core.model.message.YMCustomMessage;
 import com.yimaxiaoerlang.im_kit.R;
 import com.yimaxiaoerlang.im_kit.dialog.LodingUtils;
 import com.yimaxiaoerlang.im_kit.modlue.PrewImage;
@@ -45,6 +50,7 @@ import com.scwang.smartrefresh.layout.impl.ScrollBoundaryDeciderAdapter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.wuhenzhizao.titlebar.utils.KeyboardConflictCompat;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+import com.yimaxiaoerlang.im_kit.view.popmenu.ChatPopMenu;
 import com.yimaxiaoerlang.rtc_kit.model.CallUser;
 import com.yimaxiaoerlang.rtc_kit.ui.CallPersonSelectActivity;
 import com.yimaxiaoerlang.rtc_kit.ui.CallSingleActivity;
@@ -75,6 +81,21 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
     private boolean nodata = false;
     private int CMERA_REQUEST_CODE = 220;
     private int PHOTO_REQUEST_CODE = 222;
+    protected OnPopActionClickListener mOnPopActionClickListener;
+    protected List<ChatPopMenu.ChatPopMenuAction> mPopActions = new ArrayList<>();
+    private int mSelectedPosition = -1;
+    private ChatPopMenu mChatPopMenu;
+    private Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mChatPopMenu != null) {
+                mChatPopMenu.hide();
+            }
+
+        }
+    };
+
 
     private BaseQuickAdapter<YMMessage, BaseViewHolder> adapter = new BaseQuickAdapter<YMMessage, BaseViewHolder>(R.layout.item_message) {
         @Override
@@ -99,6 +120,15 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
 
                         }
                     });
+
+            // 长按点击事件
+            ((MessageItemView) holder.getView(R.id.item_messgae)).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showItemPopMenu(item, holder.getView(R.id.item_messgae));
+                    return false;
+                }
+            });
         }
 
     };
@@ -257,6 +287,72 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
             }
 
         });
+
+        // 消息长按PopAction监听
+        mOnPopActionClickListener = new OnPopActionClickListener() {
+            @Override
+            public void onCopyClick(YMMessage msg) {
+                String content = "";
+                //获取剪贴板管理器：
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 创建普通字符型ClipData
+                ClipData mClipData = null;
+                if (msg.getContent() instanceof YMTextMessage) {
+                    YMTextMessage message = (YMTextMessage) msg.getContent();
+                    content = message.getContent();
+                    mClipData = ClipData.newPlainText("Label", content);
+                } else if (msg.getContent() instanceof YMImageMessage) {
+                    YMImageMessage message = (YMImageMessage) msg.getContent();
+                    content = message.getUrl();
+                    mClipData = ClipData.newRawUri("Label", Uri.parse(content));
+                } else if (msg.getContent() instanceof YMVideoMessage) {
+                    YMVideoMessage message = (YMVideoMessage) msg.getContent();
+                    content = message.getUrl();
+                    mClipData = ClipData.newRawUri("Label", Uri.parse(content));
+                } else if (msg.getContent() instanceof YMVoiceMessage) {
+                    YMVoiceMessage message = (YMVoiceMessage) msg.getContent();
+                    content = message.getUrl();
+                    mClipData = ClipData.newRawUri("Label", Uri.parse(content));
+                } else if (msg.getContent() instanceof YMCustomMessage) {
+                    YMCustomMessage message = (YMCustomMessage) msg.getContent();
+                    content = message.getContent();
+                    mClipData = ClipData.newPlainText("Label", content);
+                }
+                // 将ClipData内容放到系统剪贴板里。
+                cm.setPrimaryClip(mClipData);
+                ToastUtils.normal("复制成功");
+            }
+
+            @Override
+            public void onSendMessageClick(YMMessage msg, boolean retry) {
+
+            }
+
+            @Override
+            public void onDeleteMessageClick(YMMessage msg) {
+
+            }
+
+            @Override
+            public void onRevokeMessageClick(YMMessage msg) {
+
+            }
+
+            @Override
+            public void onMultiSelectMessageClick(YMMessage msg) {
+
+            }
+
+            @Override
+            public void onForwardMessageClick(YMMessage msg) {
+
+            }
+
+            @Override
+            public void onReplyMessageClick(YMMessage msg) {
+
+            }
+        };
     }
 
 
@@ -296,6 +392,76 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
         }
 
 
+    }
+
+    public void showItemPopMenu(final YMMessage messageInfo, View view) {
+        initPopActions(messageInfo);
+        if (mPopActions.size() == 0) {
+            return;
+        }
+
+        if (mChatPopMenu != null) {
+            mChatPopMenu.hide();
+            mChatPopMenu = null;
+            handler.removeCallbacks(runnable);
+        }
+        mChatPopMenu = new ChatPopMenu(this);
+        mChatPopMenu.setChatPopMenuActionList(mPopActions);
+        int[] location = new int[2];
+        recycler.getLocationOnScreen(location);
+        mChatPopMenu.show(view, location[1]);
+        mChatPopMenu.setEmptySpaceClickListener(new ChatPopMenu.OnEmptySpaceClickListener() {
+            @Override
+            public void onClick() {
+
+            }
+        });
+
+        handler.postDelayed(runnable, 10000);
+
+        /*postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mChatPopMenu != null) {
+                    mChatPopMenu.hide();
+                }
+                if (mAdapter != null) {
+                    mAdapter.resetSelectableText();
+                }
+            }
+        }, 10000); // 10s后无操作自动消失*/
+    }
+
+    private void initPopActions(final YMMessage msg) {
+        if (msg == null) {
+            return;
+        }
+
+        List<ChatPopMenu.ChatPopMenuAction> actions = new ArrayList<>();
+        actions.clear();
+        ChatPopMenu.ChatPopMenuAction action = new ChatPopMenu.ChatPopMenuAction();
+        if (msg.getContent() instanceof YMTextMessage) {
+            action.setActionName(getString(R.string.copy_action));
+            action.setActionIcon(R.drawable.pop_menu_copy);
+            action.setActionClickListener(() -> mOnPopActionClickListener.onCopyClick(msg));
+            actions.add(action);
+        }
+
+        action = new ChatPopMenu.ChatPopMenuAction();
+        action.setActionName(getString(R.string.delete_action));
+        action.setActionIcon(R.drawable.pop_menu_delete);
+        action.setActionClickListener(() -> mOnPopActionClickListener.onDeleteMessageClick(msg));
+        actions.add(action);
+
+        //转发
+        action = new ChatPopMenu.ChatPopMenuAction();
+        action.setActionName(getString(R.string.forward_button));
+        action.setActionIcon(R.drawable.pop_menu_forward);
+        action.setActionClickListener(()-> mOnPopActionClickListener.onForwardMessageClick(msg));
+        actions.add(action);
+
+        mPopActions.clear();
+        mPopActions.addAll(actions);
     }
 
     @Override
@@ -618,5 +784,22 @@ public class ChatActivity extends FragmentActivity implements MessageReceiveList
      */
     private void sendDestroy() {
         sendBroadcast(new Intent("com.mize.young.angel.destroy"));
+    }
+
+    public interface OnPopActionClickListener {
+
+        void onCopyClick(YMMessage msg);
+
+        void onSendMessageClick(YMMessage msg, boolean retry);
+
+        void onDeleteMessageClick(YMMessage msg);
+
+        void onRevokeMessageClick(YMMessage msg);
+
+        void onMultiSelectMessageClick(YMMessage msg);
+
+        void onForwardMessageClick(YMMessage msg);
+
+        void onReplyMessageClick(YMMessage msg);
     }
 }
