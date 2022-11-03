@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.yimaxiaoerlang.im_kit.view.circle.CircleImageView
+        android:id="@+id/headImage"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="12dp"
+        />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="用户昵称呀"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/headImage"
+        app:layout_constraintTop_toTopOf="@+id/headImage"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="14dp"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/headImage"
+        android:layout_marginBottom="6dp"
+        android:orientation="horizontal">
+
+        <com.noober.background.view.BLFrameLayout
+            android:id="@+id/ponit"
+            android:layout_width="7dp"
+            android:layout_height="7dp"
+            android:layout_gravity="center"
+            app:bl_corners_radius="3.5dp"
+            android:layout_marginEnd="8dp"
+            app:bl_solid_color="#FF0000"/>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="你好，一起聊天吧~你好，一起哈..."
+            android:textColor="#ff999999"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:paddingEnd="15dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/headImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:text="10分钟前"
+        android:textColor="#ff999999"
+        android:textSize="11sp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,7 +56,7 @@ import java.util.List;
 public class ConversationListFragment extends Fragment implements MessageReceiveListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ArrayList<YMConversation> conversationArray = new ArrayList<>();
-    private BaseQuickAdapter<YMConversation, BaseViewHolder> adapter = new BaseQuickAdapter<YMConversation, BaseViewHolder>(R.layout.rc_conversationlist_item) {
+    private BaseQuickAdapter<YMConversation, BaseViewHolder> adapter = new BaseQuickAdapter<YMConversation, BaseViewHolder>(R.layout.item_message_list_layout) {
         @Override
         public void convert(BaseViewHolder holder, YMConversation item) {
             if (item.getConversationType() == YMConversation.ConversationType.GROUP || item.getConversationType() == YMConversation.ConversationType.CHATROOM) {
@@ -66,45 +66,38 @@ public class ConversationListFragment extends Fragment implements MessageReceive
                         .setLayoutManager(new WechatLayoutManager())
                         .setSize(35)
                         .setUrls(groupHeads)
-                        .setImageView(holder.getView(R.id.iv_icon))
+                        .setImageView(holder.getView(R.id.headImage))
                         .build();
             } else {
                 // 其他类型
-                ImageUtils.loadImage(holder.getView(R.id.iv_icon), item.getPortraitUrl());
+                ImageUtils.loadImage(holder.getView(R.id.headImage), item.getPortraitUrl());
             }
-            holder.setText(R.id.rc_conversation_title, item.getConversationTitle());
+            holder.setText(R.id.name, item.getConversationTitle());
             if (item.getLatestMessage() != null) {
                 YMMessageContent message = item.getLatestMessage();
                 holder.setText(
-                        R.id.rc_conversation_date,
+                        R.id.time,
                         ConversationTime.convertConversationTime(message.getMessageTime())
                 );
                 if (message instanceof YMTextMessage) {
-                    holder.setText(R.id.rc_conversation_content, ((YMTextMessage) message).getContent());
+                    holder.setText(R.id.content, ((YMTextMessage) message).getContent());
                 } else if (message instanceof YMVideoMessage) {
-                    holder.setText(R.id.rc_conversation_content, "[视频]");
+                    holder.setText(R.id.content, "[视频]");
                 } else if (message instanceof YMImageMessage) {
-                    holder.setText(R.id.rc_conversation_content, "[图片]");
+                    holder.setText(R.id.content, "[图片]");
                 } else if (message instanceof YMVoiceMessage) {
-                    holder.setText(R.id.rc_conversation_content, "[语音]");
+                    holder.setText(R.id.content, "[语音]");
                 } else if (message instanceof YMFileMessage) {
-                    holder.setText(R.id.rc_conversation_content, "[文件]");
+                    holder.setText(R.id.content, "[文件]");
                 } else if (message instanceof YMCustomMessage) {
-                    holder.setText(R.id.rc_conversation_content, "[分享消息]");
+                    holder.setText(R.id.content, "[分享消息]");
                 } else {
-                    holder.setText(R.id.rc_conversation_content, "[消息]");
+                    holder.setText(R.id.content, "[消息]");
                 }
             }
 
 
-            holder.setVisible(R.id.rc_conversation_unread, item.getUnreadMessageCount() > 0);
-            holder.setVisible(R.id.rc_conversation_no_disturb, false);
-            holder.setText(
-                    R.id.rc_conversation_unread_count, item.getUnreadMessageCount() > 99 ?
-                            "99+"
-                            :
-                            "" + item.getUnreadMessageCount()
-            );
+            holder.setVisible(R.id.ponit, item.getUnreadMessageCount() > 0);
 
         }
     };
