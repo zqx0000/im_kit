@@ -17,8 +17,11 @@
     <color name="read_dot_bg">#f74c31</color>
     <color name="action_bar_title_color">#202020</color>
     <color name="text_color_gray">#696969</color>
+    <color name="white">#FFFFFF</color>
     <color name="red">#F43C3E</color>
     <color name="color222">#222222</color>
+    <color name="color333">#333333</color>
+    <color name="color666">#666666</color>
     <color name="color999">#999999</color>
     <color name="backgroundColor">#F9F9F9</color>
     <color name="transparent">#00000000</color>
@@ -28,4 +31,5 @@
     <color name="core_btn_pressed_color">#FF0064E7</color>
     <color name="text_color_black">#000</color>
     <color name="input_title_line_color">#D2D2D2</color>
+    <color name="MessageInpitView_backgroundColor">#f5f6f9</color>
 </resources>

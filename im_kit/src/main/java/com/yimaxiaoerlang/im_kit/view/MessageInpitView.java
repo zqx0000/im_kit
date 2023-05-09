@@ -1,6 +1,7 @@
 package com.yimaxiaoerlang.im_kit.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -41,6 +43,8 @@ public class MessageInpitView extends LinearLayout {
     private EmotionLayout emojiLayout;
     private Button sendBtn;
     private View inputMoreView;
+    private CardView cardView;
+    private LinearLayout container;
     protected List<InputMoreActionUnit> mInputMoreActionList = new ArrayList<>();
     private FragmentManager mFragmentManager;
     private InputMoreFragment mInputMoreFragment;
@@ -52,22 +56,35 @@ public class MessageInpitView extends LinearLayout {
 
     public MessageInpitView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public MessageInpitView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         assembleActions();
         mActivity = (FragmentActivity) getContext();
+        TypedArray a = mActivity.obtainStyledAttributes(attrs, R.styleable.MessageInpitView);
+        int backgroundColor = a.getColor(R.styleable.MessageInpitView_backgroundColor, mActivity.getResources().getColor(R.color.MessageInpitView_backgroundColor));
+        int editBackgroundColor = a.getColor(R.styleable.MessageInpitView_editBackgroundColor, mActivity.getResources().getColor(R.color.white));
+        int textColor = a.getColor(R.styleable.MessageInpitView_textColor, mActivity.getResources().getColor(R.color.color333));
+        float textSize = a.getDimension(R.styleable.MessageInpitView_textSize, mActivity.getResources().getDimension(R.dimen.s15));
+        int hintTextColor = a.getColor(R.styleable.MessageInpitView_hintTextColor, mActivity.getResources().getColor(R.color.white));
         LayoutInflater.from(getContext()).inflate(R.layout.view_chat_bottom, this);
+        container = findViewById(R.id.container);
+        container.setBackgroundColor(backgroundColor);
         menuLayout = findViewById(R.id.menu_layout);
         inputMoreView = findViewById(R.id.input_more_view);
+        cardView = findViewById(R.id.cardView);
+        cardView.setCardBackgroundColor(editBackgroundColor);
         //文字部分
         textInputView = findViewById(R.id.message_input);
+        textInputView.setTextSize(textSize);
+        textInputView.setTextColor(textColor);
+        textInputView.setHintTextColor(hintTextColor);
         textInputView.setHorizontallyScrolling(false);
         textInputView.setMaxLines(Integer.MAX_VALUE);
         textInputView.setOnClickListener(new OnClickListener() {
