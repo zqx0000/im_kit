@@ -6,5 +6,11 @@
         <attr name="textColor" format="color" />
         <attr name="hintTextColor" format="color" />
         <attr name="textSize" format="dimension" />
+        <attr name="voiceIcon" format="reference" />
+        <attr name="emojiIcon" format="reference" />
+        <attr name="moreIcon" format="reference" />
+        <attr name="photoActionIcon" format="reference" />
+        <attr name="cameraActionIcon" format="reference" />
+        <attr name="callPhoneActionIcon" format="reference" />
     </declare-styleable>
 </resources>

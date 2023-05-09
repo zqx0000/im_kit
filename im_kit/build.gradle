@@ -44,7 +44,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.yimaxiaoerlang'
                 artifactId = 'im_kit'
-                version = '1.0.4'
+                version = '1.0.5'
             }
         }
     }

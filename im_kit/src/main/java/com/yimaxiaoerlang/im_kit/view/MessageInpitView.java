@@ -65,14 +65,20 @@ public class MessageInpitView extends LinearLayout {
     }
 
     private void init(AttributeSet attrs) {
-        assembleActions();
-        mActivity = (FragmentActivity) getContext();
         TypedArray a = mActivity.obtainStyledAttributes(attrs, R.styleable.MessageInpitView);
         int backgroundColor = a.getColor(R.styleable.MessageInpitView_backgroundColor, mActivity.getResources().getColor(R.color.MessageInpitView_backgroundColor));
         int editBackgroundColor = a.getColor(R.styleable.MessageInpitView_editBackgroundColor, mActivity.getResources().getColor(R.color.white));
         int textColor = a.getColor(R.styleable.MessageInpitView_textColor, mActivity.getResources().getColor(R.color.color333));
-        float textSize = a.getDimension(R.styleable.MessageInpitView_textSize, mActivity.getResources().getDimension(R.dimen.s15));
+        float textSize = a.getDimension(R.styleable.MessageInpitView_textSize, 15f);
         int hintTextColor = a.getColor(R.styleable.MessageInpitView_hintTextColor, mActivity.getResources().getColor(R.color.white));
+        int voiceIcon = a.getResourceId(R.styleable.MessageInpitView_voiceIcon, R.mipmap.inputbar_voice);
+        int emojiIcon = a.getResourceId(R.styleable.MessageInpitView_emojiIcon, R.mipmap.inputbar_emoji);
+        int moreIcon = a.getResourceId(R.styleable.MessageInpitView_moreIcon, R.mipmap.inputbar_add);
+        int photoActionIcon = a.getResourceId(R.styleable.MessageInpitView_photoActionIcon, R.mipmap.xiangce);
+        int cameraActionIcon = a.getResourceId(R.styleable.MessageInpitView_cameraActionIcon, R.mipmap.paishe);
+        int callPhoneActionIcon = a.getResourceId(R.styleable.MessageInpitView_callPhoneActionIcon, R.mipmap.tonghua);
+        assembleActions(photoActionIcon, cameraActionIcon, callPhoneActionIcon);
+        mActivity = (FragmentActivity) getContext();
         LayoutInflater.from(getContext()).inflate(R.layout.view_chat_bottom, this);
         container = findViewById(R.id.container);
         container.setBackgroundColor(backgroundColor);
@@ -128,6 +134,7 @@ public class MessageInpitView extends LinearLayout {
 
         //语音部分
         soundImage = findViewById(R.id.img_sound_layout);
+        soundImage.setImageResource(voiceIcon);
         audioRecordButton = findViewById(R.id.audioButton);
         soundImage.setOnClickListener(new OnClickListener() {
             @Override
@@ -155,6 +162,7 @@ public class MessageInpitView extends LinearLayout {
 
         //底部菜单
         showMore = findViewById(R.id.menu_more);
+        showMore.setImageResource(moreIcon);
         showMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,7 +231,9 @@ public class MessageInpitView extends LinearLayout {
         emojiLayout.attachEditText(textInputView);
         emojiLayout.setEmotionAddVisiable(true);
         emojiLayout.setEmotionSettingVisiable(true);
-        findViewById(R.id.iv_emoji).setOnClickListener(new OnClickListener() {
+        ImageView emojiIv = findViewById(R.id.iv_emoji);
+        emojiIv.setImageResource(emojiIcon);
+        emojiIv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 emojiVisibility(emojiLayout.getVisibility() != VISIBLE);
@@ -250,10 +260,10 @@ public class MessageInpitView extends LinearLayout {
         inputMoreView.setVisibility(View.GONE);
     }
 
-    protected void assembleActions() {
+    protected void assembleActions(int photoActionIcon, int cameraActionIcon, int callPhoneActionIcon) {
         mInputMoreActionList.clear();
         InputMoreActionUnit action = new InputMoreActionUnit();
-        action.setIconResId(R.mipmap.xiangce);
+        action.setIconResId(photoActionIcon);
         action.setTitleId(R.string.action_photo);
         action.setOnClickListener(new OnClickListener() {
             @Override
@@ -270,7 +280,7 @@ public class MessageInpitView extends LinearLayout {
         });
         mInputMoreActionList.add(action);
         action = new InputMoreActionUnit();
-        action.setIconResId(R.mipmap.paishe);
+        action.setIconResId(cameraActionIcon);
         action.setTitleId(R.string.action_camera);
         action.setOnClickListener(new OnClickListener() {
             @Override
@@ -288,7 +298,7 @@ public class MessageInpitView extends LinearLayout {
         mInputMoreActionList.add(action);
         if (!YMIMKit.getIsOpenAV()) return;
         action = new InputMoreActionUnit();
-        action.setIconResId(R.mipmap.tonghua);
+        action.setIconResId(callPhoneActionIcon);
         action.setTitleId(R.string.action_call);
         action.setOnClickListener(new OnClickListener() {
             @Override
