@@ -44,7 +44,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below.
                 groupId = 'com.yimaxiaoerlang'
                 artifactId = 'im_kit'
-                version = '1.0.5'
+                version = '1.0.6'
             }
         }
     }
@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.wuhenzhizao:titlebar:1.2.0'
     implementation 'com.gitee.yimaxiaoerlang:module_camera:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:emoji:1.0.0'
-    implementation 'com.gitee.yimaxiaoerlang:im_core:1.0.4'
+    implementation 'com.gitee.yimaxiaoerlang:im_core:1.0.6'
     implementation 'com.gitee.yimaxiaoerlang:rtc_core:1.0.1'
     implementation 'com.gitee.yimaxiaoerlang:rtc_kit:1.0.0'
     implementation 'com.gitee.yimaxiaoerlang:ym_base:1.0.0'
@@ -99,7 +99,7 @@ dependencies {
     implementation 'com.github.zhaolewei:ZlwAudioRecorder:v1.08'
 
     //权限
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 
 

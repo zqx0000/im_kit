@@ -10,8 +10,8 @@ public class AppApplication extends Application {
         super.onCreate();
 
         YMIMKit.getInstance().setAppContext(this);
-        YMIMKit.getInstance().initIM("7ZC217279tDS3Z659hnw", "A2K8ac23wnPK0427i2ss");
-        YMIMKit.getInstance().configAddress("https://im.yuefuximai.com", "wss://im.yuefuximai.com/websocket", "wss://im.yuefuximai.com/signal");
+        YMIMKit.getInstance().initIM("o5728KP83S097fE60vTz", "S7D56527914yodN9zO9e");
+        YMIMKit.getInstance().configAddress("https://im.yimaxiaoerlang.cn", "wss://im.yimaxiaoerlang.cn/websocket", "wss://im.yimaxiaoerlang.cn/signal");
 
     }
 }

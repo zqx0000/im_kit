@@ -49,6 +49,12 @@ public class MessageInpitView extends LinearLayout {
     private FragmentManager mFragmentManager;
     private InputMoreFragment mInputMoreFragment;
     private FragmentActivity mActivity;
+    int voiceIcon = R.mipmap.inputbar_voice;
+    int emojiIcon = R.mipmap.inputbar_emoji;
+    int moreIcon = R.mipmap.inputbar_add;
+    int photoActionIcon = R.mipmap.xiangce;
+    int cameraActionIcon = R.mipmap.paishe;
+    int callPhoneActionIcon = R.mipmap.tonghua;
 
     public void setListener(MessageInputListener listener) {
         this.listener = listener;
@@ -65,6 +71,7 @@ public class MessageInpitView extends LinearLayout {
     }
 
     private void init(AttributeSet attrs) {
+        mActivity = (FragmentActivity) getContext();
         TypedArray a = mActivity.obtainStyledAttributes(attrs, R.styleable.MessageInpitView);
         int backgroundColor = a.getColor(R.styleable.MessageInpitView_backgroundColor, mActivity.getResources().getColor(R.color.MessageInpitView_backgroundColor));
         int editBackgroundColor = a.getColor(R.styleable.MessageInpitView_editBackgroundColor, mActivity.getResources().getColor(R.color.white));
@@ -78,7 +85,6 @@ public class MessageInpitView extends LinearLayout {
         int cameraActionIcon = a.getResourceId(R.styleable.MessageInpitView_cameraActionIcon, R.mipmap.paishe);
         int callPhoneActionIcon = a.getResourceId(R.styleable.MessageInpitView_callPhoneActionIcon, R.mipmap.tonghua);
         assembleActions(photoActionIcon, cameraActionIcon, callPhoneActionIcon);
-        mActivity = (FragmentActivity) getContext();
         LayoutInflater.from(getContext()).inflate(R.layout.view_chat_bottom, this);
         container = findViewById(R.id.container);
         container.setBackgroundColor(backgroundColor);
