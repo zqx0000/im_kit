@@ -24,6 +24,8 @@ import com.yimaxiaoerlang.im_core.core.other.YMConnectCallback;
 import com.yimaxiaoerlang.im_core.core.other.YMConnectError;
 import com.yimaxiaoerlang.im_core.core.YMIMClient;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -39,6 +41,8 @@ public class YMIMKit {
     private LoginCallback loginCallback;
     private static Context appContext;
     private static boolean isOpenAV = false;// 是否开通音视频
+
+    private int keyboardHeight = 0;
 
     public static YMIMKit getInstance() {
         return ourInstance;
@@ -254,5 +258,13 @@ public class YMIMKit {
         YMIMClient.getInstance().logout();
         YMRLClient.getInstance().logout();
         UserUtils.getInstance().setUser(null);
+    }
+
+    public int getKeyboardHeight() {
+        return keyboardHeight;
+    }
+
+    public void setKeyboardHeight(int keyboardHeight) {
+        this.keyboardHeight = keyboardHeight;
     }
 }

@@ -2,53 +2,37 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yimaxiaoerlang.im_kit">
     <!-- Required to provide the web interface -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- Required to run keep-alive service when targeting API 28 or higher -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application android:networkSecurityConfig="@xml/config">
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.ChatroomMemberActivity"
+            android:name=".ui.NewChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".ui.ChatroomMemberActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.ChatRoomListActivity"
+            android:name=".ui.ChatRoomListActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.SearchUserActivity"
+            android:name=".ui.SearchUserActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.FriendProfileActivity"
+            android:name=".ui.FriendProfileActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.GroupInfoActivity"
+            android:name=".ui.GroupInfoActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.ChatRoomInfoActivity"
+            android:name=".ui.ChatRoomInfoActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.SelectFriendActivity"
+            android:name=".ui.SelectFriendActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.NewFriendListActivity"
+            android:name=".ui.NewFriendListActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.AddFriendActivity"
+            android:name=".ui.AddFriendActivity"
             android:exported="false" />
         <activity
             android:name="com.yimaxiaoerlang.rtc_kit.ui.CallMultiActivity"
@@ -57,32 +41,52 @@
             android:name="com.yimaxiaoerlang.rtc_kit.ui.CallSingleActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.CmeraActivity"
+            android:name=".ui.CmeraActivity"
             android:exported="false" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.ChatActivity"
+            android:name=".ui.ChatActivity"
             android:exported="false"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.IndexActivity"
+            android:name=".ui.IndexActivity"
             android:exported="false"
             android:launchMode="singleTop" />
 
+        <activity
+            android:name=".ui.YMLoginActivity"
+            android:launchMode="standard" />
+
+        <activity
+            android:name=".ui.PlayVideoActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
         <provider
-            android:name="com.yimaxiaoerlang.im_kit.IMContentProvider"
+            android:name=".IMContentProvider"
             android:authorities="${applicationId}.ww"
             android:enabled="true"
             android:exported="true" />
-
         <service android:name="com.zlw.main.recorderlib.recorder.RecordService" />
+    </application> <!-- Required to run keep-alive service when targeting API 28 or higher -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-        <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.YMLoginActivity"
-            android:launchMode="standard" />
-        <activity
-            android:name="com.yimaxiaoerlang.im_kit.ui.PlayVideoActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-    </application>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
+
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

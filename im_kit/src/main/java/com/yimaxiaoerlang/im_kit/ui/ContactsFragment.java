@@ -82,7 +82,7 @@ public class ContactsFragment extends Fragment implements SwipeRefreshLayout.OnR
                 conversation.setConversationTitle(contacts.getUsername());
                 conversation.setPortraitUrl(contacts.getUserAvatar());
                 conversation.setConversationType(YMConversation.ConversationType.PRIVATE);
-                Intent intent = new Intent(requireContext(), ChatActivity.class);
+                Intent intent = new Intent(requireContext(), NewChatActivity.class);
 
                 intent.putExtra("conversation", conversation);
                 startActivity(intent);

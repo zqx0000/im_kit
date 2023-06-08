@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.lqr.emoji.EmotionLayout
+        android:id="@+id/sb_emoji"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btn_send"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_margin="15dp"
+        android:text="发送"/>
+
+</FrameLayout>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="photoActionIcon" format="reference" />
+    <attr name="cameraActionIcon" format="reference" />
+    <attr name="callPhoneActionIcon" format="reference" />
     <declare-styleable name="MessageInpitView">
         <attr name="backgroundColor" format="color" />
         <attr name="editBackgroundColor" format="color" />
@@ -9,8 +12,24 @@
         <attr name="voiceIcon" format="reference" />
         <attr name="emojiIcon" format="reference" />
         <attr name="moreIcon" format="reference" />
-        <attr name="photoActionIcon" format="reference" />
-        <attr name="cameraActionIcon" format="reference" />
-        <attr name="callPhoneActionIcon" format="reference" />
+        <attr name="photoActionIcon" />
+        <attr name="cameraActionIcon" />
+        <attr name="callPhoneActionIcon" />
+    </declare-styleable>
+    <declare-styleable name="CImageButton">
+        <attr name="cib_normal_image_res_id" format="reference" />
+        <attr name="cib_pressed_image_res_id" format="reference" />
+        <attr name="cib_disabled_image_res_id" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CTextButton">
+        <attr name="ctb_normal_text_color" format="color|reference" />
+        <attr name="ctb_pressed_text_color" format="color|reference" />
+        <attr name="ctb_disabled_text_color" format="color|reference" />
+    </declare-styleable>
+    <declare-styleable name="CMorePanel">
+        <attr name="photoActionIcon" />
+        <attr name="cameraActionIcon" />
+        <attr name="callPhoneActionIcon" />
     </declare-styleable>
 </resources>

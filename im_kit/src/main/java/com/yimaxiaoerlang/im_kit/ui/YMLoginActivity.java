@@ -2,8 +2,10 @@ package com.yimaxiaoerlang.im_kit.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import com.yimaxiaoerlang.im_kit.modlue.SelectUser;
 import com.yimaxiaoerlang.im_kit.utils.SPUtil;
 import com.yimaxiaoerlang.im_kit.utils.SystemBarHelper;
 import com.yimaxiaoerlang.im_kit.utils.ToastUtils;
+import com.yimaxiaoerlang.im_kit.view.newinput.SoftKeyboardStateHelper;
 import com.yimaxiaoerlang.ym_base.YMConfig;
 
 public class YMLoginActivity extends AppCompatActivity implements LoginCallback {
@@ -22,6 +25,7 @@ public class YMLoginActivity extends AppCompatActivity implements LoginCallback 
     private static final String YM_USER_ID = "YM_USER_ID";
     private EditText uidInput;
     private EditText nameInput;
+    private LinearLayout layout_main;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class YMLoginActivity extends AppCompatActivity implements LoginCallback 
     }
 
     private void initView() {
+        layout_main = findViewById(R.id.layout_main);
         nameInput = findViewById(R.id.et_user_name);
         uidInput = findViewById(R.id.et_uid);
         nameInput.setText(SPUtil.getString(YM_USER_NAME));
@@ -42,6 +47,20 @@ public class YMLoginActivity extends AppCompatActivity implements LoginCallback 
                 login();
             }
         });
+        SoftKeyboardStateHelper helper = new SoftKeyboardStateHelper(layout_main);
+        helper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeight) {
+                Log.e("TAG", "onSoftKeyboardOpened: " + keyboardHeight);
+                YMIMKit.getInstance().setKeyboardHeight(keyboardHeight);
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+
+            }
+        });
+
     }
 
     private void login() {
