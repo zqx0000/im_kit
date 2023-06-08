@@ -70,7 +70,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 //    api 'com.freddy:kulakeyboard_lib:1.0.1'
-    api files('libs/library_kulakeyboard-release.aar')
+    implementation 'com.gitee.jiezo:kulakeyboard:1.0.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4'
 
