@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -45,12 +46,14 @@ import com.yimaxiaoerlang.im_kit.core.YMIMKit
 import com.yimaxiaoerlang.im_kit.dialog.LodingUtils
 import com.yimaxiaoerlang.im_kit.modlue.PrewImage
 import com.yimaxiaoerlang.im_kit.utils.Image
+import com.yimaxiaoerlang.im_kit.utils.KeyboardStateObserver
 import com.yimaxiaoerlang.im_kit.utils.MediaFileUtil
 import com.yimaxiaoerlang.im_kit.utils.MessageCenter
 import com.yimaxiaoerlang.im_kit.utils.MessageReceiveListener
 import com.yimaxiaoerlang.im_kit.utils.SavePhoto
 import com.yimaxiaoerlang.im_kit.utils.TestImageLoader
 import com.yimaxiaoerlang.im_kit.utils.ToastUtils
+import com.yimaxiaoerlang.im_kit.utils.UserUtils
 import com.yimaxiaoerlang.im_kit.view.messageview.ItemMessageClickListener
 import com.yimaxiaoerlang.im_kit.view.messageview.MessageItemView
 import com.yimaxiaoerlang.im_kit.view.newinput.CExpressionPanel
@@ -58,7 +61,12 @@ import com.yimaxiaoerlang.im_kit.view.newinput.CInputPanel
 import com.yimaxiaoerlang.im_kit.view.newinput.CMorePanel
 import com.yimaxiaoerlang.im_kit.view.popmenu.ChatPopMenu
 import com.yimaxiaoerlang.im_kit.view.popmenu.ChatPopMenu.ChatPopMenuAction
+import com.yimaxiaoerlang.rtc_kit.model.CallUser
+import com.yimaxiaoerlang.rtc_kit.ui.CallPersonSelectActivity
+import com.yimaxiaoerlang.rtc_kit.ui.CallSingleActivity
 import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.PicassoEngine
 import java.io.File
 import java.io.IOException
 
@@ -112,51 +120,88 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
                 finish()
             } else if (action == CommonTitleBar.ACTION_RIGHT_BUTTON) {
                 //设置
-                if (conversation!!.conversationType == YMConversation.ConversationType.GROUP) {
-                    GroupInfoActivity.start(conversation!!.groupId, this@NewChatActivity)
-                } else if (conversation!!.conversationType == YMConversation.ConversationType.CHATROOM) {
-                    ChatRoomInfoActivity.start(conversation!!.groupId, this@NewChatActivity)
-                } else {
-                    Log.e(TAG, "onClicked: " + conversation!!.targetId)
-                    FriendProfileActivity.start(
-                        conversation!!.targetId,
-                        conversation!!.groupId,
-                        this@NewChatActivity
-                    )
-                }
+                sendSeeting()
             }
         })
 
         // 发送、发送语音监听
         chatInputPanel.setInputPanelListener(object : CInputPanel.InputPanelListener {
             override fun sendText(text: String) {
-                sendTextMessgae(text)
+                sendTextMessage(text)
             }
 
             override fun sendVoice(file: String, duration: Int) {
-                sendVoiceMessgae(file, duration)
+                sendVoiceMessage(file, duration)
             }
 
         })
         // 表情发送监听
         expressionPanel.setExpressionPanelListener(object : CExpressionPanel.ExpressionPanelListener {
             override fun emojiSend(content: String) {
-                sendTextMessgae(content)
+                sendTextMessage(content)
             }
 
         })
         // 更多栏目监听
         morePanel.setMoreActionClickListener(object : CMorePanel.MorePanelActionClickListener {
             override fun selectPhoto() {
-                ToastUtils.normal("点击照片")
+                Matisse.from(this@NewChatActivity)
+                    .choose(MimeType.ofAll())
+                    .countable(true)
+                    .maxSelectable(9)
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(PicassoEngine())
+                    .showPreview(false)
+                    .forResult(PHOTO_REQUEST_CODE)
             }
 
             override fun shoot() {
-                ToastUtils.normal("点击拍摄")
+                startActivityForResult(
+                    Intent(this@NewChatActivity, CmeraActivity::class.java),
+                    CMERA_REQUEST_CODE
+                )
             }
 
             override fun call() {
-
+                if (conversationInfo!!.conversationType == YMConversation.ConversationType.GROUP) {
+                    if (conversationInfo == null || conversation!!.personnels == null || conversation!!.personnels.isEmpty()) {
+                        ToastUtils.normal("没有可以呼叫的人")
+                        return
+                    }
+                    val users = java.util.ArrayList<CallUser>()
+                    for (personnel in conversation!!.personnels) {
+                        if (personnel.uid != UserUtils.getInstance().user.uid) {
+                            users.add(CallUser(personnel.uid, personnel.name, personnel.avatar))
+                        }
+                    }
+                    users.add(
+                        CallUser(
+                            UserUtils.getInstance().user.uid,
+                            UserUtils.getInstance().user.username,
+                            UserUtils.getInstance().user.userAvatar
+                        )
+                    )
+                    CallPersonSelectActivity.start(
+                        this@NewChatActivity,
+                        conversationInfo!!.groupId,
+                        users,
+                        true
+                    )
+                } else {
+                    if (conversationInfo == null) {
+                        ToastUtils.normal("没有可以呼叫的人")
+                        return
+                    }
+                    CallSingleActivity.call(
+                        this@NewChatActivity,
+                        conversationInfo!!.targetId,
+                        conversationInfo!!.groupId,
+                        conversationInfo!!.conversationTitle,
+                        conversationInfo!!.portraitUrl,
+                        true
+                    )
+                }
             }
 
         })
@@ -233,15 +278,26 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
             override fun onReplyMessageClick(msg: YMMessage) {}
         }
 
+        KeyboardStateObserver.getKeyboardStateObserver(this)
+            .setKeyboardVisibilityListener(object :
+                KeyboardStateObserver.OnKeyboardVisibilityListener {
+                override fun onKeyboardShow() {
+                    scrollToBottom()
+                }
+
+                override fun onKeyboardHide() {
+
+                }
+
+            })
 
         keyboardHelper = KeyboardHelper()
         keyboardHelper.init(this)
             .bindRootLayout(container)
+            .bindRecyclerView(recycler)
             .bindInputPanel(chatInputPanel)
             .bindExpressionPanel(expressionPanel)
             .bindMorePanel(morePanel)
-            .bindRecyclerView(recycler)
-            .setScrollBodyLayout(adapter.data.size > 15)
             .setKeyboardHeight(
                 if (YMIMKit.getInstance().keyboardHeight == 0) DensityUtil.getScreenHeight(applicationContext) / 5 * 2 else YMIMKit.getInstance().keyboardHeight
             )
@@ -253,6 +309,13 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
                 override fun onClosed() {
                 }
             })
+        recycler.setHasFixedSize(true)
+        recycler.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                keyboardHelper.reset()
+            }
+            false
+        }
     }
 
     /**
@@ -268,10 +331,11 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
      * 初始化标题
      */
     private fun initTitle() {
-        if (conversation != null) {
+        conversation?.let {
             //设置标题
-            titleBar!!.centerTextView.text = "New Chat"
+            titleBar.centerTextView.text = it.conversationTitle
         }
+
     }
 
     /**
@@ -458,14 +522,14 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
                     override fun onSuccess(var1: List<YMMessage>) {
                         if (index == 1) {
                             adapter.setList(var1)
-                            recycler!!.scrollToPosition(var1.size - 1)
+                            scrollToBottom()
                             if (!var1.isEmpty()) {
                                 readLastMessage(var1[var1.size - 1])
                             }
                         } else {
-                            refreshLayout!!.finishLoadMore()
+                            refreshLayout.finishLoadMore()
                             adapter.addData(0, var1)
-                            recycler!!.scrollToPosition(var1.size)
+                            scrollToBottom()
                         }
                     }
 
@@ -496,8 +560,12 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
     override fun onReceive(message: YMMessage) {
         Log.e(TAG, "onReceive: " + (message.content as YMTextMessage).content)
         adapter.addData(message)
-        recycler!!.smoothScrollToPosition(adapter.itemCount - 1)
+        scrollToBottom()
         readLastMessage(message)
+    }
+
+    private fun scrollToBottom() {
+        recycler.adapter?.itemCount?.minus(1)?.let { recycler.scrollToPosition(it) }
     }
 
     /**
@@ -510,7 +578,7 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
     /**
      * 发送文字消息
      */
-    private fun sendTextMessgae(msg: String) {
+    private fun sendTextMessage(msg: String) {
         val content = YMTextMessage.create(msg)
         val message = YMMessage(conversationInfo!!.groupId, content)
         sendMessage(message)
@@ -519,7 +587,7 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
     /**
      * 发送语音消息
      */
-    private fun sendVoiceMessgae(file: String, duration: Int) {
+    private fun sendVoiceMessage(file: String, duration: Int) {
         val content = YMVoiceMessage(duration, file)
         val message = YMMessage(conversationInfo!!.groupId, content)
         sendMessage(message)
@@ -620,7 +688,6 @@ class NewChatActivity : AppCompatActivity(), MessageReceiveListener {
         intent.putExtra("gid", conversationInfo!!.groupId)
         intent.putExtra("name", conversationInfo!!.conversationTitle)
         sendBroadcast(intent)
-        finish()
     }
 
     /**

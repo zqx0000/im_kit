@@ -11,7 +11,7 @@ public class AppApplication extends Application {
 
         YMIMKit.getInstance().setAppContext(this);
         YMIMKit.getInstance().initIM("o5728KP83S097fE60vTz", "S7D56527914yodN9zO9e");
-//        YMIMKit.getInstance().configAddress("https://im.yimaxiaoerlang.cn", "wss://im.yimaxiaoerlang.cn/websocket", "wss://im.yimaxiaoerlang.cn/signal");
-        YMIMKit.getInstance().configAddress("http://192.168.124.19:8001", "ws://192.168.124.19:8001/websocket", "ws://192.168.124.19:8001/signal");
+        YMIMKit.getInstance().configAddress("https://im.yimaxiaoerlang.cn", "wss://im.yimaxiaoerlang.cn/websocket", "wss://im.yimaxiaoerlang.cn/signal");
+//        YMIMKit.getInstance().configAddress("http://192.168.124.19:8001", "ws://192.168.124.19:8001/websocket", "ws://192.168.124.19:8001/signal");
     }
 }

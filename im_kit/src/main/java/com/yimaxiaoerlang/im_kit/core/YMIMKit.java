@@ -54,6 +54,7 @@ public class YMIMKit {
 
     public void setAppContext(Context context) {
         appContext = context;
+        YMIMClient.getInstance().setAppContext(context);
     }
 
     public void init(YMConfig ymIMConfig, YMConfig ymRLConfig) {
