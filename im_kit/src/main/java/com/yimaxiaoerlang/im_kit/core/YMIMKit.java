@@ -135,7 +135,7 @@ public class YMIMKit {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.e("zgj", "成功");
-                map.put("type", "2");
+                map.put("type", "1");
                 NetModel.getInstance().request(RetrofitHelper.getInstance().getRequest(LoginService.class).login(map), new ResultListener<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult2) {
